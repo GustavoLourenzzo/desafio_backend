@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <title>Manual da api</title>
+    </head>
+    <style>
+        h4{
+            color:grey;
+            margin-bottom: 10px;
+        }
+        body{
+            background-color: lightgrey;
+            
+        }
+        .top{
+            display: flex;
+            /* flex-direction: row; */
+            justify-content: center;
+            align-items: center;
+        }
+        .body-metodo{
+            margin-top: 20px;
+            width: 80%;
+            border-radius: 15px;
+            padding: 30px;
+            background-color: white;
+        }
+        .metodo{
+            border-radius: 5px;
+            box-shadow: 1px 2px 2px lightgrey;
+            border: 1px solid lightgrey;
+            padding: 5px 20px;
+            margin-bottom: 15px;
+        }
+        .descricao{
+            font-size: 14px;
+            color:lightslategray;
+        }
+        .retornos-metodo li{
+            padding-bottom: 15px;
+        }
+    </style>
+    <body>
+        <div class="top">
+            <div class="body-metodo">
+                <h4>Manual de utilização da API - Simulação</h4>
+                <div class="metodo">
+                    <span class="titulo-metodo">
+                        [SEU HOST]/get-taxa  | [GET]
+                    </span>
+                    <div>
+                        <h5>Descrição</h5>
+                        <span>
+                            <p class="descricao">
+                                Rota responsavel de buscar e retornar segundo paramentros a taxa de juros selecionada.
+                            </p>
+                        </span>
+                    </div>
+                    <div class="parans-metodo">
+                        <h5>Paramentros</h5>
+                        <ul>
+                            <li>
+                                tipo  : String (enum) ["NEGATIVADO", "SCORE_ALTO","SCORE_BAIXO"]
+                            </li>
+                            <li>
+                                numeroParcelas   :  int (enum) [6, 12, 18, 24, 36]
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>Retorno</h5>
+                        <ul class="retornos-metodo">
+                            <li>
+                                code : 400:Bad Request 
+                                <div>
+                                    {
+                                        result:{
+                                            "error":{
+                                                "msg": "400 error: Requisição inválida.",
+                                                "errors": [DESCRIÇÃO DO ERRO DETECTADO]
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </li>
+                            <li>
+                                code : 403:forbidden
+                                <div>
+                                    {
+                                        result:{
+                                            "error":{
+                                                "msg": "403 error: O registro solicitado não existe."
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </li>
+                            <li>
+                                code : 200:success(200)
+                                <div>
+                                    {
+                                        result:[TAXAJUROS]
+                                    }
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="metodo">
+                    <span class="titulo-metodo">
+                        [SEU HOST]/calculo  | [POST]
+                    </span>
+                    <div>
+                        <h5>Descrição</h5>
+                        <span>
+                            <p class="descricao">
+                                Rota responsavel calcular com base nos parametros enviados, o valor do montante e do valor por parcela da simulação de emprestimo. Utilizando a formula de juros compostos.
+                            </p>
+                        </span>
+                    </div>
+                    <div class="parans-metodo">
+                        <h5>Paramentros</h5>
+                        <ul>
+                            <li>
+                                valor  : float | int  -> [valor] > 0
+                            </li>
+                            <li>
+                                numeroParcelas   :  int (enum) [6, 12, 18, 24, 36]
+                            </li>
+                            <li>
+                                taxaJuros  : float  -> [taxaJuros] < 1
+                            </li>
+                        </ul>
+                    </div>
+                    <div> 
+                        <h5>Retorno</h5>
+                        <ul class="retornos-metodo">
+                            <li>
+                                code : 400:Bad Request 
+                                <div>
+                                    {
+                                        result:{
+                                            "error":{
+                                                "msg": "400 error: Requisição inválida.",
+                                                "errors": [DESCRIÇÃO DO ERRO DETECTADO]
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </li>
+                            <li>
+                                code : 200:success(200)
+                                <div>
+                                    {
+                                        "result": { "total": [VALOR_TOTAL], "total_parcela": [VALOR_POR_PARCELA] } 
+                                    }
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
