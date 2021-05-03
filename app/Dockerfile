@@ -9,7 +9,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 RUN apt-get upgrade -y
 RUN apt-get update -y
-RUN apt-get install vim -y
+#RUN apt-get install vim -y
 
 ENV FLASK_APP=./app
 ENV FLASK_ENV=development

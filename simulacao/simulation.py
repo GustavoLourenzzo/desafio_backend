@@ -4,6 +4,8 @@ import http_response
 from utils import Utils
 from flask_mongoengine import MongoEngine
 from models.TaxasModel import TaxaModel
+from flask_cors import CORS
+
 
 app = Flask(__name__)
 
@@ -19,7 +21,7 @@ app.config['MONGODB_SETTINGS'] = {
 
 db = MongoEngine()
 db.init_app(app)
-
+CORS(app)
 
 @app.route('/', methods=['GET'])
 def index():
@@ -76,11 +78,12 @@ def calculaSimulacao():
     else:
         return http_response.bad_request(["O campo 'taxaJuros' não foi enviado."])
     
-    montante = float(data['valor']) * ((1+ float(data['taxaJuros']))**int(data['numeroParcelas']))
+    montante = round(float(data['valor']) * ((1+ float(data['taxaJuros']))**int(data['numeroParcelas'])), 2)
 
     ret = {}
-    ret['total'] = montante
-    ret['total_parcela'] = montante / int(data['numeroParcelas'])
+
+    ret['total_parcela'] = round(montante / int(data['numeroParcelas']), 2)
+    ret['total'] = ret['total_parcela'] *  int(data['numeroParcelas'])
 
     #return http_response.success_200("ok")
     return http_response.success_200(ret)

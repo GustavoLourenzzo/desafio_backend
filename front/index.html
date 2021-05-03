@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <title>Desafio credito express</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Gustavo Lourenzzo">
+        <meta name="description" content="Desafio credito express">
+        <style>
+            body{
+                margin: 0;
+            }
+            html, body{
+                height: 100%;
+            }
+            .fundo{
+                width: 100%;
+                min-height: 100%;
+                background: rgb(255,255,255);
+                background: linear-gradient(0deg, rgba(255,255,255,1) 9%, rgba(0,146,255,1) 100%);
+            }
+            .top{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            .area_centro{
+                background-color: white;
+                border-radius: 5px;
+                box-shadow: 1px 2px 4px lightgrey;
+                border: 1px solid lightgrey;
+                padding: 5px 20px;
+                margin-bottom: 15px;
+                margin-top: 20px;
+                height: 350px;
+                position: relative;
+            }
+            .boxLogin{
+                background-color: white;
+                border-radius: 5px;
+                box-shadow: 1px 2px 4px lightgrey;
+                border: 1px solid lightgrey;
+                padding: 4px;
+            }
+            .resultado_itens{
+                border-radius: 50px;
+                box-shadow: 1px 2px 4px lightgrey;
+                border: 1px solid lightgrey;
+                padding: 8px 10px;
+                margin-bottom: 10px;
+            }
+            .titulo{
+                text-shadow: 4px 4px 5px black, 0 0 2em blue, 0 0 0.4em blue;
+                color: white;
+                font: 2.0em Georgia, "Bitstream Charter", "URW Bookman L", "Century Schoolbook L", serif;
+            }
+            .w-100{
+                width: 100%;
+            }
+            .w-90{
+                width: 90%;
+            }
+            .w-80{
+                width: 80%;
+            }
+            .w-70{
+                width: 70%;
+            }
+            .w-60{
+                width: 60%;
+            }
+            .w-50{
+                width: 50%;
+            }
+            .w-40{
+                width: 40%;
+            }
+            .w-10{
+                width: 10%;
+            }
+            .divider{
+                height: 250px;
+                width: 0px;
+                border: lightgrey 1px solid;
+            }
+            .body_sections{
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+                
+            }
+            .ajusteAltura{
+                min-height: 100%;
+            }
+            .formInput{
+                height: 50px;
+                color: lightslategray;
+                background-color: white;
+                border: 1px solid gray;
+                border-radius: 5px;
+                /* padding: 3px; */
+                outline: none;
+            }
+            .formLabel{
+                font-size: 14px;
+                font-weight: bold;
+            }
+            .margin_bottom{
+                margin-bottom: 4px;
+            }
+            .btnPadrao{
+                color: white;
+                background-color: #1d4dad;
+                text-shadow: 0 0 2em #437ffa, 0 0 0.4em #5e94ff;
+                padding: 5px;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                font-weight: bold;
+                font-size: 14px;
+                min-width: 100px;
+                min-height: 40px;
+                border-radius: 5px;
+                pointer-events: visible;
+                cursor: pointer;
+            }
+            .relative{
+                position: relative;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="fundo top">
+            <div class="w-60">
+                <h3 class="titulo">Crédito Express - Simulador de Crédito</h3>
+            </div>
+            <div class="area_centro w-60">
+                <!-- bloco inicial -->
+                <div id="home_itens" class="body_sections">
+                    <div id="deslogado" class="w-50 ajusteAltura top" style="padding: 5px;">
+                        <h3 style="font-weight: bold; color: #1d4dad; ">Identificação</h3>
+                        <p style="margin: 3px 5px;">Obtenha a melhor opção para o seu perfil:</p>
+                        <div class="w-100 boxLogin top" style="padding: 20px 10px;">
+                            <form method="POST" class="w-90" id="for_login">
+                                <div class="w-100 margin_bottom top" style="margin-bottom: 15px;">
+                                    <label class="w-100 formLabel">CPF:</label>
+                                    <input class="formInput" id="for_login-cpf" name="cpf" required="required" style="max-width: 98%; min-width: 98%;"/>
+                                </div>
+                                <div class="w-100 margin_bottom top" style="margin-bottom: 15px;">
+                                    <label class="w-100 formLabel">Celular:</label>
+                                    <input class="formInput" id="for_login-celular" name="celular" required="required" style="max-width: 98%; min-width: 98%;"/>
+                                </div>
+                                <div class="w-100" style="display:flex; flex-direction: row; justify-content: space-between; justify-items: center;">
+                                    <button class="btnPadrao" type="submit">Login</button>
+                                    <a id="for_login-registrar" 
+                                        href="#" style="text-decoration: none;">Registrar-se</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div id="logado" class="w-50 ajusteAltura top" style="padding: 5px; display: none;">
+                        <h3 style="font-weight: bold; color: #1d4dad; ">Perfil</h3>
+                        <p style="margin: 3px 5px;">Olá, <span id="logado_nome"></span> logo abaixo está o seu perfil atual:</p>
+                        
+                        <div class="w-100 top resultado_itens"  
+                            style="flex-direction: row; justify-content: space-between;">
+                            <span style="font-weight: bold;">Score: </span>
+                            <span style="font-weight: 200;" id="logado-score"></span>
+                        </div>
+
+                        <div class="w-100 top resultado_itens"  
+                            style="flex-direction: row; justify-content: space-between;">
+                            <span style="font-weight: bold;">Negativado: </span>
+                            <span style="font-weight: 200;" id="logado-negativado"></span>
+                        </div>
+
+                        <label class="w-100 formLabel" style="margin-bottom: 5px; margin-top: 15px;">Ações:</label>
+                        <div class="w-100 top" style="flex-direction: row; justify-content: space-around; justify-items: center;">
+                            <button onclick="showLogado(false)" class="btnPadrao" type="button" style="background-color:lightslategrey;">Sair</button>
+                            <button onclick="showGerCadastro(true)" class="btnPadrao" type="submit">Editar</button>
+                            <button onclick="deleteUser()" class="btnPadrao" type="button" style="background-color: darkred;">Deletar</button>
+                        </div>
+
+                    </div>
+                    
+                    <div class="w-10 top ajusteAltura">
+                        <div class="divider"></div>
+                    </div>
+                    <div id="infor-semlogin" class="w-40 ajusteAltura top" style="padding: 5px;">
+                        <span style="margin-bottom: 20px; font-size: 15px; font-weight: bold; color: #1d4dad;" >
+                            Clique <a id="semId" href="#" style="text-decoration: none;">aqui</a> para iniciar a simulação.
+                        </span>
+                        <i style="font-size: 12px; color: #ad7c0c; ">* Lembrando que ao se identificar é possivel obter melhores condições de crédito.</i>
+                    </div>
+                    <div id="form-semlogin" class="w-40 ajusteAltura top" style="padding: 5px; display: none;">
+                        <h3 style="font-weight: bold; color: #1d4dad; ">Simulação</h3>
+                        <p>Digite os dados solicitados nos campos abaixo:</p>
+                        <div class="w-100">
+                            <form method="POST" class="w-100" id="for_simulation">
+                                <div class="w-100 margin_bottom top">
+                                    <label class="w-100 formLabel">Valor simulado:</label>
+                                    <input class="formInput" id="valor_simulado" name="valor" required="required" style="max-width: 98%; min-width: 98%;"/>
+                                </div>
+                                <div class="w-100 margin_bottom">
+                                    <label class="w-100 formLabel">Quantidade de parcelas:</label>
+                                    <select class="w-100 formInput" name="numeroParcelas" id="numeroParcelas" required="required">
+                                        <option value="6"> x 6</option>
+                                        <option value="12"> x 12</option>
+                                        <option value="18"> x 18</option>
+                                        <option value="24"> x 24</option>
+                                        <option value="36"> x 36</option>
+                                    </select>
+                                </div>
+                                <div class="w-100">
+                                    <button class="btnPadrao" type="submit">Simular</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div id="resultado_view" class="top relative ajusteAltura w-40" style="padding: 5px; display: none;">
+                        <h3>Resultado</h3>
+                        <p>Veja os valores abaixo:</p>
+                        <div class="w-100 top resultado_itens"  
+                            style="flex-direction: row; justify-content: space-between;">
+                            <span style="font-weight: bold;">Valor inicial: </span>
+                            <span style="font-weight: 200;" id="r_valor-inicial"></span>
+                        </div>
+
+                        <div class="w-100 top resultado_itens"  
+                            style="flex-direction: row; justify-content: space-between;">
+                            <span style="font-weight: bold;">Taxa: </span>
+                            <span style="font-weight: 200;" id="r_taxa"></span>
+                        </div>
+
+                        <div class="w-100 top resultado_itens"  
+                            style="flex-direction: row; justify-content: space-between;">
+                            <span style="font-weight: bold;">Quant. Parcelas: </span>
+                            <span style="font-weight: 200;" id="r_qtd-parcela"></span>
+                        </div>
+
+                        <div class="w-100 top resultado_itens"  
+                            style="flex-direction: row; justify-content: space-between;">
+                            <span style="font-weight: bold;">Valor Parcela: </span>
+                            <span style="font-weight: 200;" id="r_valor-parcela"></span>
+                        </div>
+
+                        <div class="w-100 top resultado_itens"  
+                            style="flex-direction: row; justify-content: space-between;">
+                            <span style="font-weight: bold;">Valor total: </span>
+                            <span style="font-weight: 200;" id="r_valor-total"></span>
+                        </div>
+                        <div style="position: absolute; top: 25px; left: -10px;">
+                            <button onclick="etapaConsulta()" style="border-radius: 50px; min-width: 0;" class="btnPadrao" type="button">Voltar</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="ger_cadastro" class="body_sections" style="display: none;">
+                    <div class="w-100 ajusteAltura top" style="padding: 5px;">
+                        <h3 id="title_ger" style="font-weight: bold; color: #1d4dad; margin-top: 5px; margin-bottom: 5x;">Cadastre-se</h3>
+                        <div class="w-80 ajusteAltura top">
+                            <form method="POST" class="w-90" id="for_dados">
+                                <div class="margin_bottom top w-100" >
+                                    <label class=" formLabel" style="width: 95%;">Nome:</label>
+                                    <input class="formInput w-100" id="for_dados-nome" name="nome" required="required" style="width: 95%;"/>
+                                </div>
+                                <div class="w-100 top" style="margin-bottom: 15px; flex-direction: row;">
+                                    <div class="w-50 margin_bottom top" >
+                                        <label class="w-90 formLabel">CPF:</label>
+                                        <input class="formInput w-90" id="for_dados-cpf" name="cpf" required="required"/>
+                                    </div>
+                                    <div class="w-50 margin_bottom top">
+                                        <label class="w-90 formLabel">Celular:</label>
+                                        <input class="formInput w-90" id="for_dados-celular" name="celular" required="required"/>
+                                    </div>
+                                </div>
+                                <div class="w-100 top" style="margin-bottom: 15px; flex-direction: row;">
+                                    <div class="w-50 margin_bottom top" >
+                                        <label class="w-90 formLabel">Score:</label>
+                                        <input type="number" min="0" max="1000" class="formInput w-90" id="for_dados-score" name="score" required="required"/>
+                                    </div>
+                                    <div class="w-50 margin_bottom top">
+                                        <label class="w-90 formLabel">Negativado:</label>
+                                        <select class="w-90 formInput" name="negativado" id="for_dados-negativado" required="required">
+                                            <option value="0">Não</option>
+                                            <option value="1">Sim</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <input id="for_dados-type" name="type" type="hidden"/>
+                                <div class="w-90" style="display:flex; flex-direction: row; justify-content: space-between; justify-items: center;">
+                                    <button id="for_dados-btn" class="btnPadrao" type="submit"></button>
+                                    <button onclick="hiddeGerCadastro()" class="btnPadrao" type="button" style="background-color:lightslategrey;">Voltar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="./js/jquery-3.6.0.js"></script>
+        <script src="./js/jquery.mask.js"></script>
+        <script>
+            var host = "http://localhost:5000";
+            $(document).ready(function(){
+                if(JSON.parse(sessionStorage.getItem("dados_user"))) showLogado(true);
+
+                //mascaras
+                $("#valor_simulado").mask("#.##0,00", {reverse: true});
+                $('input[name="cpf"]').mask('000.000.000-00', {reverse: true});
+                $('input[name="celular"]').mask('(00) 00000-0000');
+                $("#for_dados-score").mask("0000");
+
+                // submit formularios
+                $("#for_login").submit(function(e){
+                    e.preventDefault();
+
+                    var dados = {
+                        "cpf": $("#for_login-cpf").val(),
+                        "celular":$("#for_login-celular").val(),
+                    }
+                    
+                    $.ajax({
+                        type: "POST",
+                        headers: {
+                            'Content-Type':'application/json',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'HEAD, GET, POST, PUT, PATCH, DELETE',
+                            'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'
+                            //'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        timeout: 10000,
+                        url:host+"/login",
+                        //dataType: 'JSON',
+                        data: JSON.stringify(dados),
+                        success:function(data){
+                            data.result.cpf = formatCpf(data.result.cpf);
+                            data.result.celular = formatTel(data.result.celular);
+                            console.log(data);
+                            sessionStorage.setItem("dados_user", JSON.stringify(data.result));
+                            showLogado(true);
+                        },
+                        error:function(erro){
+                            var obj = erro.responseJSON.result.error;
+                            var erros = "";
+                            if(obj.errors){
+                                obj = obj.errors;
+                                obj.forEach(element => {
+                                    erros += element+"\n";
+                                });
+                            
+                            }else{
+                                erros += obj.msg;
+                            }                         
+                            alert(erros);
+                        }
+                    });
+                    
+                });
+
+                $("#for_dados").submit(function(e){
+                    e.preventDefault();
+
+                    var dados = {
+                        "cpf": $("#for_dados-cpf").val(),
+                        "celular":$("#for_dados-celular").val(),
+                        "nome":$("#for_dados-nome").val(),
+                        "score":parseInt($("#for_dados-score").val()),
+                        "negativado":parseInt($("#for_dados-negativado").val()) == 1
+                    }
+                    var comp = $("#for_dados-type").val();
+
+                    $.ajax({
+                        type: comp == "editar" ? "PUT" : "POST",
+                        headers: {
+                            'Content-Type':'application/json',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'HEAD, GET, POST, PUT, PATCH, DELETE',
+                            'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'
+                            //'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        timeout: 10000,
+                        url:host+"/usuario/"+comp,
+                        //dataType: 'JSON',
+                        data: JSON.stringify(dados),
+                        success:function(data){
+                            sessionStorage.setItem("dados_user", JSON.stringify(dados));
+                            hiddeGerCadastro();
+                            showLogado(true);
+                            alert(data.result)
+                        },
+                        error:function(erro){
+                            var obj = erro.responseJSON.result.error;
+                            var erros = "";
+                            if(obj.errors){
+                                obj = obj.errors;
+                                obj.forEach(element => {
+                                    erros += element+"\n";
+                                });
+                            
+                            }else{
+                                erros += obj.msg;
+                            }                         
+                            alert(erros);
+                        }
+                    });
+                    
+                });
+
+                $("#for_simulation").submit(function(e){
+                    e.preventDefault();
+                    var dados_user = JSON.parse(sessionStorage.getItem("dados_user"));
+                    var valor = parseFloat((($("#valor_simulado").val()).replaceAll(".","")).replace(",", "."));
+                    var dados = {'numeroParcelas': parseInt($("#numeroParcelas").val()), 'valor': valor};
+                    if(dados_user){
+                        dados['user'] = dados_user;
+                    }
+                    
+                    $.ajax({
+                        type: "POST",
+                        headers: {
+                            'Content-Type':'application/json',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'HEAD, GET, POST, PUT, PATCH, DELETE',
+                            'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'
+                            //'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        timeout: 10000,
+                        url:host+"/simulacao",
+                        //dataType: 'JSON',
+                        data: JSON.stringify(dados),
+                        success:function(data){
+                            //console.log(data);
+                            $("#r_valor-total").html("R$ "+parseFloat(data.result.total.toString()).toFixed(2).replace(".",","));
+                            $("#r_valor-inicial").html("R$ "+ parseFloat(data.result.v_inicial.toString()).toFixed(2).replace(".",","));
+                            $("#r_taxa").html((data.result.taxa * 100)+ " %");
+                            $("#r_qtd-parcela").html(data.result.qtd_parcelas);
+                            $("#r_valor-parcela").html("R$ "+parseFloat(data.result.total_parcela.toString()).toFixed(2).replace(".",","));
+                            
+                            etapaResultado();
+                        },
+                        error:function(erro){
+                            var obj = erro.responseJSON.result.error;
+                            var erros = "";
+                            if(obj.errors){
+                                obj = obj.errors;
+                                obj.forEach(element => {
+                                    erros += element+"\n";
+                                });
+                            
+                            }else{
+                                erros += obj.msg;
+                            }                         
+                            alert(erros);
+                        }
+                    });
+                });
+
+                //ações complementares
+                
+
+                //eventos de click
+                $("#semId").click(function(event){
+                    event.preventDefault();
+                    etapaConsulta();
+                });
+                $("#for_login-registrar").click(function(event){
+                    event.preventDefault();
+                    showGerCadastro(false);
+                });
+            });
+
+            function deleteUser(){
+                var dados_user = JSON.parse(sessionStorage.getItem("dados_user"));
+                var dados = {
+                    "cpf": dados_user['cpf'],
+                    "celular":dados_user['celular'],
+                }
+                
+                $.ajax({
+                    type: "DELETE",
+                    headers: {
+                        'Content-Type':'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'HEAD, GET, POST, PUT, PATCH, DELETE',
+                        'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'
+                        //'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    timeout: 10000,
+                    url:host+"/usuario/deletar",
+                    //dataType: 'JSON',
+                    data: JSON.stringify(dados),
+                    success:function(data){
+                        console.log(data);
+                        sessionStorage.setItem("dados_user", null);
+                        showLogado(false);
+                        alert(data.result)
+                    },
+                    error:function(erro){
+                        var obj = erro.responseJSON.result.error;
+                        var erros = "";
+                        if(obj.errors){
+                            obj = obj.errors;
+                            obj.forEach(element => {
+                                erros += element+"\n";
+                            });
+                        
+                        }else{
+                            erros += obj.msg;
+                        }                         
+                        alert(erros);
+                    }
+                });
+                
+            }
+
+            function showGerCadastro(edita){
+                if(edita){
+                    var dados_user = JSON.parse(sessionStorage.getItem("dados_user"));
+                    //preenche os dados antes
+                    $("#for_dados-cpf").val(dados_user['cpf']);
+                    $("#for_dados-cpf").attr("readonly", true);
+                    $("#for_dados-celular").val(dados_user['celular']);
+                    $("#for_dados-celular").attr("readonly", true);
+                    $("#for_dados-nome").val(dados_user['nome']);
+                    $("#for_dados-score").val(dados_user['score']);
+                    $("#for_dados-negativado").val(dados_user['negativado'] ? 1 : 0);
+
+
+                    //--------------------------------------
+                    $("#for_dados-btn").html("Gravar");
+                    $("#for_dados-type").val("editar");
+                    $('#title_ger').html("Editar Cadastro");
+                    $("#for_dados input,#for_dados select ").each(function(e){
+                        $(this).removeAttr("required");
+                    });
+                    $("#for_dados-celular").attr("required", true);
+                    $("#for_dados-cpf").attr("required", true);
+                }else{
+                    //limpa formulario
+                    $("#for_dados-cpf").val("");
+                    $("#for_dados-cpf").attr("readonly", false);
+                    $("#for_dados-celular").val("");
+                    $("#for_dados-celular").attr("readonly", false);
+                    $("#for_dados-nome").val("");
+                    $("#for_dados-score").val("");
+                    $("#for_dados-negativado").val("");
+                    //--------------------------------------
+                    $("#for_dados-type").val("cadastrar");
+                    $("#for_dados-btn").html("Cadastrar");
+                    $('#title_ger').html("Cadastre-se");
+                    $("#for_dados input,#for_dados select ").each(function(e){
+                        $(this).attr("required", true);
+                    });
+                    
+                }
+                $("#home_itens").css("display", 'none');
+                $("#ger_cadastro").removeAttr('style');
+            }
+
+            function hiddeGerCadastro(){
+                $("#for_dados input,#for_dados select ").each(function(e){
+                    $(this).removeAttr("required");
+                });
+
+                $("#ger_cadastro").css("display", 'none');
+                $("#home_itens").removeAttr('style');
+            }
+            
+            function etapaConsulta(){
+                $("#infor-semlogin").css("display", 'none');
+                $("#form-semlogin").removeAttr('style');
+                $('#form-semlogin').css("padding", "5px");
+                $("#resultado_view").css("display", 'none');
+            }
+
+            function etapaResultado(){
+                $("#form-semlogin").css("display", 'none');
+                $("#resultado_view").removeAttr('style');
+                $('#resultado_view').css("padding", "5px");
+
+
+                
+            }
+            
+            function showLogado(logado){
+                if(logado){
+                    var dados_user = JSON.parse(sessionStorage.getItem("dados_user"));
+                    $("#deslogado").css("display", 'none');
+                    $("#logado").removeAttr('style');
+                    $('#logado').css("padding", "5px");
+                    $("#logado_nome").html(dados_user['nome']);
+                    $("#logado-score").html(dados_user['score']);
+                    $("#logado-negativado").html(dados_user['negativado'] ? "sim" : "Não");
+
+                }else{
+                    $("#for_login-cpf").val("");
+                    $("#for_login-celular").val("");
+                    $("#logado").css("display", 'none');
+                    $("#deslogado").removeAttr('style');
+                    $('#deslogado').css("padding", "5px");
+                    sessionStorage.setItem("dados_user", null);
+
+
+                }
+            }
+            
+            // auxiliares ----------
+            function formatCpf(value){
+                return value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+            }
+            function formatTel(value){
+                if(value.length > 10){
+                    return value.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+                }
+                return value.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3");
+            }
+            //----------
+        </script>
+    </body>
+</html>

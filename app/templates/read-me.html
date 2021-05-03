@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <title>Manual da api</title>
+    </head>
+    <style>
+        h4{
+            color:grey;
+            margin-bottom: 10px;
+        }
+        body{
+            background-color: lightgrey;
+            
+        }
+        .top{
+            display: flex;
+            /* flex-direction: row; */
+            justify-content: center;
+            align-items: center;
+        }
+        .body-metodo{
+            margin-top: 20px;
+            width: 80%;
+            border-radius: 15px;
+            padding: 30px;
+            background-color: white;
+        }
+        .metodo{
+            border-radius: 5px;
+            box-shadow: 1px 2px 2px lightgrey;
+            border: 1px solid lightgrey;
+            padding: 5px 20px;
+            margin-bottom: 15px;
+        }
+        .descricao{
+            font-size: 14px;
+            color:lightslategray;
+        }
+        .retornos-metodo li{
+            padding-bottom: 15px;
+        }
+    </style>
+    <body>
+        <div class="top">
+            <div class="body-metodo">
+                <h4>Manual de utilização da API - Geral</h4>
+                <div class="metodo">
+                    <span class="titulo-metodo">
+                        [SEU HOST]/simulacao  | [POST]
+                    </span>
+                    <div>
+                        <h5>Descrição</h5>
+                        <span>
+                            <p class="descricao">
+                                Rota responsável por validar os paramentros necessarios e acionar a API responsavel para calcular o valor simulado.
+                            </p>
+                        </span>
+                    </div>
+                    <div class="parans-metodo">
+                        <h5>Paramentros</h5>
+                        <ul>
+                            <li>
+                                valor (Obrigatório)  : float | int  -> [valor] > 0
+                            </li>
+                            <li>
+                                numeroParcelas (Obrigatório)   :  int (enum) [6, 12, 18, 24, 36]
+                            </li>
+                            <li>
+                                user : Array  -> null | Object ModelUser ({ 
+                                    "celular": [CELULAR],
+                                     "cpf": [CPF], "negativado": [NEGATIVADO], "nome": [NOME], "score": [SCORE] })
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>Retorno</h5>
+                        <ul class="retornos-metodo">
+                            <li>
+                                code : 400:Bad Request 
+                                <div>
+                                    {
+                                        result:{
+                                            "error":{
+                                                "msg": "400 error: Requisição inválida.",
+                                                "errors": [DESCRIÇÃO DO ERRO DETECTADO]
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </li>
+                            <li>
+                                code : 403:forbidden
+                                <div>
+                                    {
+                                        result:{
+                                            "error":{
+                                                "msg": "403 error: O registro solicitado não existe."
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </li>
+                            <li>
+                                code : 500: Internal Server Error
+                                <div>
+                                    {
+                                        result:{
+                                            "error":{
+                                                "msg": "500 error: Houve um problema inesperado com o servidor."
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </li>
+                            <li>
+                                code : 200:success(200)
+                                <div>
+                                    {result: {qtd_parcelas: [NUMERO_PARCELAS], taxa: [TAXA_JUROS], total: [VALOR_TOTAL], total_parcela: [VALOR_PARCELA], v_inicial: [VALOR_INICIAL]}}
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="metodo">
+                    <span class="titulo-metodo">
+                        [SEU HOST]/login  | [POST]
+                    </span>
+                    <div>
+                        <h5>Descrição</h5>
+                        <span>
+                            <p class="descricao">
+                                Rota responsavel acionar a api de identificação do usuario e caso o registro seja encontrado retornar o registro.
+                            </p>
+                        </span>
+                    </div>
+                    <div class="parans-metodo">
+                        <h5>Paramentros</h5>
+                        <ul>
+                            <li>
+                                cpf (Obrigatório) : String -> min = max = 11
+                            </li>
+                            <li>
+                                celular (Obrigatório)  :  String -> min =10, ma=11
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>Retorno</h5>
+                        <ul class="retornos-metodo">
+                            <li>
+                                code : 400:Bad Request 
+                                <div>
+                                    {
+                                        result:{
+                                            "error":{
+                                                "msg": "400 error: Requisição inválida.",
+                                                "errors": [DESCRIÇÃO DO ERRO DETECTADO]
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </li>
+                            <li>
+                                code : 403:forbidden
+                                <div>
+                                    {
+                                        result:{
+                                            "error":{
+                                                "msg": "403 error: O registro solicitado não existe."
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </li>
+                            <li>
+                                code : 200:success(200)
+                                <div>
+                                    {
+                                        "result": { 
+                                            "celular": [CELULAR],
+                                             "cpf": [CPF], "negativado": [NEGATIVADO], "nome": [NOME], "score": [SCORE] }
+                                    }
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="metodo">
+                    <span class="titulo-metodo">
+                        [SEU HOST]/usuario/cadastrar  | [POST]
+                    </span>
+                    <div>
+                        <h5>Descrição</h5>
+                        <span>
+                            <p class="descricao">
+                                Rota responsavel por acionar a api de identificação do usuario e realizar o cadastro do registro.
+                            </p>
+                        </span>
+                    </div>
+                    <div class="parans-metodo">
+                        <h5>Paramentros</h5>
+                        <ul>
+                            <li>
+                                cpf (Obrigatório) : String -> min = max = 11
+                            </li>
+                            <li>
+                                celular  (Obrigatório) :  String -> min =10, ma=11
+                            </li>
+                            <li>
+                                nome (Obrigatório) : String -> min = 4
+                            </li>
+                            <li>
+                                score (Obrigatório) : int ->  min = 0, max = 1000
+                            </li>
+                            <li>
+                                negativado (Obrigatório) : bool 
+                            </li>
+                        </ul>
+                    </div>
+                    <div> 
+                        <h5>Retorno</h5>
+                        <ul class="retornos-metodo">
+                            <li>
+                                code : 400:Bad Request 
+                                <div>
+                                    {
+                                        result:{
+                                            "error":{
+                                                "msg": "400 error: Requisição inválida.",
+                                                "errors": [DESCRIÇÃO DO ERRO DETECTADO]
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </li>
+                            <li>
+                                code : 201:success(201)
+                                <div>
+                                    {
+                                        {'result': "Registro gravado com sucesso."} 
+                                    }
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="metodo">
+                    <span class="titulo-metodo">
+                        [SEU HOST]/usuario/editar  | [PUT]
+                    </span>
+                    <div>
+                        <h5>Descrição</h5>
+                        <span>
+                            <p class="descricao">
+                                Rota responsavel por acionar a api de identificação do usuario e atualizar o registro.
+                            </p>
+                        </span>
+                    </div>
+                    <div class="parans-metodo">
+                        <h5>Paramentros</h5>
+                        <ul>
+                            <li>
+                                cpf (Obrigatório) : String -> min = max = 11
+                            </li>
+                            <li>
+                                celular (Obrigatório)  :  String -> min =10, ma=11
+                            </li>
+                            <li>
+                                nome : String -> min = 4
+                            </li>
+                            <li>
+                                score : int ->  min = 0, max = 1000
+                            </li>
+                            <li>
+                                negativado : bool
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>Retorno</h5>
+                        <ul class="retornos-metodo">
+                            <li>
+                                code : 400:Bad Request 
+                                <div>
+                                    {
+                                        result:{
+                                            "error":{
+                                                "msg": "400 error: Requisição inválida.",
+                                                "errors": [DESCRIÇÃO DO ERRO DETECTADO]
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </li>
+                            <li>
+                                code : 403:forbidden
+                                <div>
+                                    {
+                                        result:{
+                                            "error":{
+                                                "msg": "403 error: O registro solicitado não existe."
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </li>
+                            <li>
+                                code : 200:success(200)
+                                <div>
+                                    {
+                                        "result": "Registro atualizado com sucesso"
+                                            
+                                    }
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="metodo">
+                    <span class="titulo-metodo">
+                        [SEU HOST]/usuario/deletar  | [DELETE]
+                    </span>
+                    <div>
+                        <h5>Descrição</h5>
+                        <span>
+                            <p class="descricao">
+                                Rota responsavel acionar a api de identificação do usuario e remove o registro.
+                            </p>
+                        </span>
+                    </div>
+                    <div class="parans-metodo">
+                        <h5>Paramentros</h5>
+                        <ul>
+                            <li>
+                                cpf (Obrigatório) : String -> min = max = 11
+                            </li>
+                            <li>
+                                celular (Obrigatório)  :  String -> min =10, ma=11
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>Retorno</h5>
+                        <ul class="retornos-metodo">
+                            <li>
+                                code : 400:Bad Request 
+                                <div>
+                                    {
+                                        result:{
+                                            "error":{
+                                                "msg": "400 error: Requisição inválida.",
+                                                "errors": [DESCRIÇÃO DO ERRO DETECTADO]
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </li>
+                            <li>
+                                code : 403:forbidden
+                                <div>
+                                    {
+                                        result:{
+                                            "error":{
+                                                "msg": "403 error: O registro solicitado não existe."
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </li>
+                            <li>
+                                code : 200:success(200)
+                                <div>
+                                    {
+                                        "result": "Registro deletado com sucesso"
+                                            
+                                    }
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

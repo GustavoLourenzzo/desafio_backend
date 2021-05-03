@@ -58,5 +58,5 @@ def success_200(data) -> Response:
 
 def success_201() -> Response:
     resp = jsonify({'result': "Registro gravado com sucesso."})
-    resp.status_code = 200
+    resp.status_code = 201
     return resp
