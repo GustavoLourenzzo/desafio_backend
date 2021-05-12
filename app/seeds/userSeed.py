@@ -11,6 +11,7 @@ class UserSeeder(Seeder):
 
     def run(self):
         data = self.ler_json("./seeds/clientes.json")
+        print("inserindo ...")
         for d in data:
             #print(d)
             mod = UserModel(
@@ -20,6 +21,7 @@ class UserSeeder(Seeder):
                 negativado=d['negativado'],
                 score=d['score']
             )
-            print("inserindo ...")
-            print(mod.to_json())
+            
+            #print(mod.to_json())
             mod.save()
+        print("Concluido")
