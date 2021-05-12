@@ -434,10 +434,11 @@
                         //dataType: 'JSON',
                         data: JSON.stringify(dados),
                         success:function(data){
-                            //console.log(data);
+                            // console.log(data.result.taxa);
+                            // console.log((data.result.taxa * 100));
                             $("#r_valor-total").html("R$ "+parseFloat(data.result.total.toString()).toFixed(2).replace(".",","));
                             $("#r_valor-inicial").html("R$ "+ parseFloat(data.result.v_inicial.toString()).toFixed(2).replace(".",","));
-                            $("#r_taxa").html((data.result.taxa * 100)+ " %");
+                            $("#r_taxa").html((parseFloat((data.result.taxa * 100).toString()).toFixed(2))+ " %");
                             $("#r_qtd-parcela").html(data.result.qtd_parcelas);
                             $("#r_valor-parcela").html("R$ "+parseFloat(data.result.total_parcela.toString()).toFixed(2).replace(".",","));
                             
